@@ -1,0 +1,111 @@
+extends ../shared/template
+
+block content
+  h1#testo EverN&#11041;de
+
+  form(action='/notes', method='post')
+    fieldset#newNote
+      legend New Note
+      .row
+        .small-6.columns
+          input(name='lat', type='text')#lat
+          input(name='lng', type='text')#lng
+          label Title
+          input#noteTitle(name='title', type='text', autofocus=true)
+        .small-6.columns
+          label Date Created
+          input(name='dateCreated', type='date')
+      .row
+        .small-8.columns
+          label Tags
+          input(name='tags', type='text')
+        .small-4.columns
+          &nbsp;
+      .row
+        .small-12.columns
+          label Body
+          textarea(rows=21, name='body')
+      .row
+        .small-12.columns
+          button.custom_button#create Create
+      #closeNewNote close[x]
+  #fullNoteWrap
+    #fullTitle= note.title
+    #fullDate= moment(note.dateCreated).format('MMMM Do, YYYY')
+    hr
+    textarea#fullBody= note.body
+    #fullTags= note.tags
+    hr#hline
+    #pictureIcon(value=note._id)
+    #noteIcon(value=note._id)
+    #pinIcon(value=note.lat, data=note.lng)
+    #nprIcon
+    .custom_button#saveChanges(value=note._id) Save
+    #trashIcon(value=note._id)
+    #cameraIcon
+    .bg_val(value=user.bg)
+    #bigPic
+      #closeBP close[x]
+    #audioWindow
+      #closeAW close[x]
+    #mappa
+    #closeMappa close[x]
+    #nprWrap
+      #closeNpr close[x]
+    #webcam
+      video#video
+      button.custom_button#startbutton Take photo
+      canvas#canvas
+      img#photo(src='#', alt='photo')
+      button.custom_button#get Add Photo
+      #closeWC close[x]
+
+  #fullSearchPanel
+    #closeFSP close[x]
+    .custom_button#sort Sort
+      .custom_button#dateS By Date
+      .custom_button#alpha By Alpha
+    .custom_button#searchP Search
+      input#srcName(type='text', placeholder='search by name...')
+      .custom_button#srcNB Search
+      input#srcDate(type='date')
+      .custom_button#srcDB Search
+      input#srcTags(type='text', placeholder='search by tags...')
+      .custom_button#srcTB Search
+  #fullSearchResult
+    #result
+
+  #picturePanel
+    #addFoto +picture
+    form(action='/noteAddFullPic/'+ note._id, method='post', enctype='multipart/form-data')
+      fieldset#form2(value=note.userId)
+        .row
+          .small-12.columns
+            input(name='photo', type='file')
+        .row
+          .small-12.columns
+            button.custom_button#form2B Add
+    #closePN close[x]
+
+  #soundPanel
+    #addAudio +audio
+    #mic
+    form(action='/noteAddFullAudio/'+ note._id, method='post', enctype='multipart/form-data')
+      fieldset#audioForm(value=note.userId)
+        .row
+          .small-12.columns
+            input(name='audio', type='file')
+        .row
+          .small-12.columns
+            button.custom_button#audioB Add
+    #closeAudio close[x]
+
+
+//form(action='/albums/' + album._id, method='post', enctype='multipart/form-data')
+//fieldset
+//input(type='file', name='photo')
+//button.tiny.radius Add Photo
+
+//form(action='/notes/' + note._id, method='post')
+//input(type='hidden', name='_method', value='delete')
+//button.alert.small.radius Delete
